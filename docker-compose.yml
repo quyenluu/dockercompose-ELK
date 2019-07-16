@@ -21,8 +21,8 @@ services:
     container_name: kibana
     ports: 
       - "5601"
-    volumes: 
-      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    # volumes: 
+    #   - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
     links: 
       [elasticsearch]
     depends_on: 
