@@ -13,8 +13,8 @@ services:
       - ./elasticsearch/data:/usr/share/elasticsearch/data
       - ./elasticsearch/backups:/usr/share/elasticsearch/backups
     expose:
-      - "9200:9200"
-      - "9300:9300"
+      - "9200"
+      - "9300"
 
   kibana:
     image: docker.elastic.co/kibana/kibana:${TAG}
@@ -27,6 +27,8 @@ services:
       [elasticsearch]
     depends_on: 
       [elasticsearch]
+    expose: 
+      - "5601"
 
   logstash:
     image: docker.elastic.co/logstash/logstash:${TAG}
