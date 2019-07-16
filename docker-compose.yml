@@ -1,0 +1,39 @@
+version: '3.7'
+services: 
+  elasticsearch:
+    image: elasticsearch:7.2.0
+    container_name: elasticsearch
+    ports: 
+      - "9200:9200"
+      - "9300:9300"
+    environment: 
+      ELASTIC_USERNAME: ${ELASTIC_USERNAME}
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+    volumes: 
+      - ./elasticsearch/data:/usr/share/elasticsearch/data
+      - ./elasticsearch/backups:/usr/share/elasticsearch/backups
+    expose:
+      - "9200"
+      - "9300"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${TAG}
+    container_name: kibana
+    ports: 
+      - "5601"
+    volumes: 
+      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    links: 
+      elasticsearch
+    depends_on: 
+      elasticsearch
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:${TAG}
+    container_name: logstash
+    volumes: 
+      - ./logstash/pipeline/:/usr/share/logstash/pipeline/
+    links: 
+      elasticsearch
+    depends_on: 
+      elasticsearch
