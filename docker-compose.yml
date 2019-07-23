@@ -7,8 +7,14 @@ services:
       - "9200:9200"
       - "9300:9300"
     environment: 
-      ELASTIC_USERNAME: ${ELASTIC_USERNAME}
-      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      # - elasticsearch.username=elastic
+      # - elasticsearch.password=MyPwd123
+      - node.name=elasticsearch
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - bootstrap.memory_lock=true
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
     volumes: 
       - ./elasticsearch/data:/usr/share/elasticsearch/data
       - ./elasticsearch/backups:/usr/share/elasticsearch/backups
@@ -21,6 +27,9 @@ services:
     container_name: kibana
     ports: 
       - "5601:5601"
+    # environment: 
+    #   - elasticsearch.username=elastic
+    #   - elasticsearch.password=MyPwd123
     # volumes: 
     #   - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
     links: 
@@ -33,8 +42,8 @@ services:
   logstash:
     image: docker.elastic.co/logstash/logstash:${TAG}
     container_name: logstash
-    volumes: 
-      - ./logstash/pipeline/:/usr/share/logstash/pipeline/
+    # volumes: 
+    #   - ./logstash/pipeline/:/usr/share/logstash/pipeline/
     links: 
       [elasticsearch]
     depends_on: 
