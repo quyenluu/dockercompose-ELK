@@ -1,5 +1,4 @@
-server.name: "kibana"
-server.host: "localhost"
-ELASTICSEARCH.URL: "http://localhost:9200"
+server.name: kibana
+elasticsearch.hosts: [ "http://elasticsearch:9200" ]
 elasticsearch.username: "elastic"
 elasticsearch.password: "MyPwd123"

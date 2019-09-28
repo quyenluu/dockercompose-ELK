@@ -16,8 +16,8 @@ services:
       - http.cors.enabled=true
       - http.cors.allow-origin=*
     volumes: 
-      - ./elasticsearch/data:/usr/share/elasticsearch/data
-      - ./elasticsearch/backups:/usr/share/elasticsearch/backups
+      - /home/home/ELK/elasticsearch/data:/usr/share/elasticsearch/data
+      - /home/home/ELK/elasticsearch/backups:/usr/share/elasticsearch/backups
     expose:
       - "9200"
       - "9300"
@@ -31,7 +31,7 @@ services:
     #   - elasticsearch.username=elastic
     #   - elasticsearch.password=MyPwd123
     # volumes: 
-    #   - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    #   - /home/home/ELK/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
     links: 
       [elasticsearch]
     depends_on: 
@@ -43,8 +43,19 @@ services:
     image: docker.elastic.co/logstash/logstash:${TAG}
     container_name: logstash
     # volumes: 
-    #   - ./logstash/pipeline/:/usr/share/logstash/pipeline/
+    #   - /home/home/ELK/logstash/pipeline/:/usr/share/logstash/pipeline/
     links: 
       [elasticsearch]
     depends_on: 
       [elasticsearch]
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+        - 8081:80
+    volumes:
+        - /home/home/ELK/nginx-config/:/etc/nginx/conf.d/
+    command: /bin/bash -c "nginx -g 'daemon off;'"
+    ulimits:
+      nproc: 65535

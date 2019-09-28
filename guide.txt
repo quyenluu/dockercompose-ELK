@@ -1,0 +1,8 @@
+1. create ELK
+    docker-compose up -d
+2. set permission folder elasticsearch
+    sudo chown -R home:home /home/home/ELK
+3. remove ELK
+    docker-compose down
+4. create ELK again
+    docker-compose up -d
